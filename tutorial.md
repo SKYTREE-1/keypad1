@@ -4,10 +4,10 @@ neopixel=github:microsoft/pxt-neopixel
 keypad=github:lioujj/pxt-keypad
 ```
 
-## 光る！カラフル・ライトバーをつくろう@showdialog
+## keypadを利用してライトバーの色を変えよう@showdialog
 この活動では、「カラフル・ライトバーをつくろう」で学習したLEDとkeypad を組み合わせて、指定した色に切り替えるプログラムを作ってみよう」
 
-<!--![メインイメージ(https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel.png)-->
+<!--![メインイメージ](https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel.png)-->
 
 ---
 
@@ -30,21 +30,26 @@ keypad=github:lioujj/pxt-keypad
 
 まず、テープLED と keypad を micro:bit に接続しましょう。
 
-**配線1**
-- micro:bit → テープLED（NeoPixel）  
-  - 3V → +5V
-  - P12 → DIN
-  - GND → GND
+**配線2**
+- micro:bit → keypad
+  - P0 → R1
+  - P1 → R2
+  - P2 → R3
+  - P8 → R4
+  - P13 → C1
+  - P14 → C2
+  - P15 → C3
+  - P16 → C4
 
-👉 接続部分を上にして左から+5V, DIN, GND。（黄色の線は信号、赤/白はモジュールごとに違うので注意‼）。  
+👉 kiypad を上にして、左から番号を振っています。
 
-![配線図2](github:SKYTREE-1/keypad1/images/wiring-diagram_keypad.png)
+![配線図2](https://github.com/SKYTREE-1/keypad1/blob/7da951ecda1ca0e339f5be36227d626886317810/images/wiring-diagram_keypad.png?raw=true)
   写真では、真ん中の線（DIN）をP0に接続するように書いてありますが、P12に接続してください。
 
-
----
-
 ## テープLEDを光らせよう1　LEDの個数の設定
+1. テープLEDの点灯テスト
+
+はじめに、テープLEDを光らせるテストをします。
 ``||neopixel: NeoPixel ||`` にある ``||variables:変数 strip を〜||``を``||basic:最初だけ||``にいれて``||neopixel: 端子P0に接続しているLED24個の〜 ||``の「24」を「8」にかえます。  
 
    ```blocks
@@ -58,7 +63,8 @@ keypad=github:lioujj/pxt-keypad
    input.onButtonPressed(Button.A, function () {
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
 })
-let strip: neopixel.Strip = null
+
+  let strip: neopixel.Strip = null
    ```
 
 
@@ -70,85 +76,141 @@ let strip: neopixel.Strip = null
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
     })
     let strip: neopixel.Strip = null
-    strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
 
   ```
 
-## テープLEDを光らせよう3 テスト
-
-できたら、Aボタンを押したときに、ほかの色が光るようにプログラムを変更してみよう。
-また、色を順番に変えるにはどうしたらいいかを考えてみよう。
 
 
-## 状態（モード）について（説明） @showdialog
-1. 状態（モード）についての説明
+## 2.状態（モード）の設定（導入） @showdialog
+2. 状態（モード）についての説明
 
-まず、これから作るプログラムでは、プログラムでは 次の2つの状態（モード） を考えます。
+これから作るプログラムでは、プログラムでは 次の2つの状態（モード） を考えます。
 
  - 待機モード（Standby）
     - 何も入力を受け付けない状態です。ボタンが押されるまで待っています。
  - 入力受付モード（Input）
     - ボタンやセンサーからの入力を受け付ける状態です。入力があると処理を実行したり、データを記録したりできます。
-<!--![NeoPixelの点滅](https://www.kodai.uec.ac.jp/sk/make-code/np/img_f1.png)-->
+
 
 ポイント：
 プログラムはこの モードの切り替え によって「今何をしているか」を判断します。
 
-## もっとテープLEDを光らせよう ２ くりかえす
-``||input:ボタンAが押されたとき||`` に ``||loops:ループ||`` にある、``||loops:くりかえし（4）回||`` を入れ4 を 10にかえて10回にする
+## 2.状態（モード）の設定（導入２） @showdialog
+モードの状態は 変数 mode で管理します。
+
+- mode = 0  … 待機モード(standby)
+- mode = 1 … 入力受付モード（input）
+
+この変数によって、プログラムが動作を変えます。
+
+モードの切り替えには、Aボタンを割り当て、待機モード ⇄ 入力受付モード というように切り替えるようにします。
+
+では、プログラムを作りましょう。
+
+## 2. 状態（モード）の設置（変数の作成）
+``||variables:変数||`` の``||variables:変数を追加する...||``で、新しい変数 **mode** を作成します。
+また、最初だけに ``||variables:変数 mode を 0 にする||`` をセットします。
+
+```blocks
+let mode = 0
+```
+
+## 2. 状態（モード）の設置（modeの切り替え）
+``||input:ボタンAが押されたとき||`` をだします。
+``||logic:論理||`` にある、フォークの形のブロックを``||input:ボタンAが押されたとき||`` にセットして、条件のところが **mode = 0** となるようにブロックをセットします。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
+    strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    if (mode == 0) {
+    	
+    } else {
     	
     }
-    strip.showColor(neopixel.colors(NeoPixelColors.Red))
 })
 let strip: neopixel.Strip = null
 ```
-## もっとテープLEDを光らせよう 3 くりかえす　
-``||loops:くりかえし10回||`` に、``||neopixel:strip を赤色に点灯する||`` を入れ、そのあとに、もうひとつ ``||neopixel:strip を赤色に点灯する||`` を入れ、「赤」を「black」にかえます。**black** は **消す** という意味です。
+## 2. 状態（モード）の設置（modeの切り替え）
+``||input:ボタンAが押されたとき||`` のなかの条件分岐の **mode = 0**  後に ``||variables:変数||``から、``||variables:変数 mode を 0 にする||`` をセットして、0を１に変えます。
+その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` を入れ、0の部分に`||variables:mode||`` をあてはめます。
+また、``||neopixel:strip を赤色に点灯する||````を、``||basic:数を表示（　）||``の下に移動します。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else {
+
+    }
+})
+let strip: neopixel.Strip = null
+```
+
+## 2. 状態（モード）の設置（modeの切り替え）
+``||input:ボタンAが押されたとき||``のなかの条件分岐の **でなければ**の後に、``||variables:変数 mode を 0 にする||``をセットします。
+その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` 追加して、0の部分に`||variables:mode||`` をあてはめます。
+また、``||neopixel:strip をblackに点灯する||````を、``||basic:数を表示（　）||``の下に追加します。
+
+```blocks
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else {
+        mode = 0
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
     }
 })
 let strip: neopixel.Strip = null
 ```
-## もっとテープLEDを光らせよう 4 テスト @showdialog
+
+## 2. 状態（モード）の設置（テスト） @showdialog
 ここまでのプログラムです。
 
 
 ```blocks
+
 input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else {
+        mode = 0
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
     }
 })
+let mode = 0
 let strip: neopixel.Strip = null
+strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+mode = 0
+let color = ""
+basic.forever(function () {
+	
+})
+
 ```
-## もっとテープLEDを光らせよう 4 テスト
+## 状態（モード）の設置（テスト） 
 micro:bit にダウンロードして実際に動かしてみましょう。
+A ボタンを押すことで、モードの表示が切り替わることが確認できたら、次へ進みましょう。
 
-## もっとテープLEDを光らせよう 4 テスト@showdialog
-下の動画のように、ついたり、きえたり、しましたか？
-考えた通りに動かなかったら「どうしてか」考えてみてください。
-<video src="https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel.mp4" controls="true" width="200"></video>
+## 3.キー入力を受け取る @showdialog
+待機モード(0)と入力受付モード(1)の切り替えができたら、入力受付モードの時に、
+キーパッドからの数の入力を受け取って変数 **color** に代入するようプログラムをします。
+キーパッドから入力した数は、文字列型で渡されるので、必要に応じて、数値に変換して利用します。
 
-## もっとテープLEDを光らせよう 4 テスト@showdialog
-NeoPixelを使ったLチカがうまくいかなかった原因は、点灯と消灯の切り替えに「待ち時間」を入れていなかったことにあります。
-NeoPixelは、色を設定するとその状態を保持しますが、すぐに次の命令で消してしまうと、実際には一瞬だけ点いてすぐ消えることになります。
-その時間は人間の目で認識できるほど長くないため、光ったこと自体が見えなかったのです。
+## 3.キー入力を受け取る（変数の作成）
+``||variables:変数||`` の``||variables:変数を追加する...||``で、新しい変数 **color** を作成します。
+そして、最初だけに ``||variables:変数 mode を 0 にする||`` をセットして、``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``を
 
-改善の方法としては、まず点灯・消灯のそれぞれの状態を、人の目に分かるくらいの時間（例えば0.2秒ほど）保つことが必要です。
-これによって、はっきりと「ついた」「消えた」と認識できるようになります。
-
-MakeCode for micro:bit では、一定時間状態を保つために ``||basic:基本||``にある``||basic:一時停止（　）ミリ秒||``ブロックを使います。
-
+```blocks
+let c = ""
+```
 
 
 ## もっとテープLEDを光らせよう 5　ポーズ
