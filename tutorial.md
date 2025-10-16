@@ -385,10 +385,10 @@ basic.forever(function () {
 let strip: neopixel.Strip = null
 ```
 
-## 4. Aボタンで決定してLEDを光らせる2
+## 4. LEDを光らせる2
 新しく追加した``||logic:もし〜なら||`` ブロックの最初の条件が ** color = 1 ** となるようにして、
 ``||neopixel:stripを赤色に点灯する||``をセットしてます。その後、``||variables:変数 mode を（）||``にするブロックを使って、``||variables:mode||`` を 0にします。
-
+その後、``||basic:数を表示()||``ブロックを使って``||variables:mode||``を表示します。
 
 ```blocks
 basic.forever(function () {
@@ -399,6 +399,7 @@ basic.forever(function () {
         if (color == "1") {
             strip.showColor(neopixel.colors(NeoPixelColors.Red))
             mode = 0
+            basic.showNumber(mode)
         } else if (false) {
         	
         } else if (false) {
@@ -413,8 +414,9 @@ basic.forever(function () {
 let strip: neopixel.Strip = null
 ```
 
-## 4. Aボタンで決定してLEDを光らせる2
+## 4. LEDを光らせる3
 新しく追加した``||logic:もし〜なら||`` ブロックの最初の条件が ** color = 2 ** ,** color = 3** の場合も同様にして、それぞれ、青、白でLEDを点灯して、``||variables:mode||``を0にします。
+また、``||variables:mode||``を表示します。
 
 ```blocks
 basic.forever(function () {
@@ -425,12 +427,15 @@ basic.forever(function () {
         if (color == "1") {
             strip.showColor(neopixel.colors(NeoPixelColors.Red))
             mode = 0
+            basic.showNumber(mode)
         } else if (color == "2") {
             strip.showColor(neopixel.colors(NeoPixelColors.Blue))
             mode = 0
+            basic.showNumber(mode)
         } else if (color == "3") {
             strip.showColor(neopixel.colors(NeoPixelColors.White))
             mode = 0
+            basic.showNumber(mode)
         } else {
         	
         }
@@ -440,39 +445,11 @@ basic.forever(function () {
 })
 let strip: neopixel.Strip = null
 ```
+
 
 
 ## 4. LEDを光らせる4
-**mode=1**の下に新しく追加した``||logic:もし〜なら||``ブロックの一番うえの ``||logic:(　)=(　)||`` をあてはめ、
-右辺に ``||text:テキスト||``にある``||text:("　")||``をセットして、**""**の間に**1**を書き入れます。
-その後、左辺に ``||variables:変数||``から``||variables:color||``をセットします。
-
-```blocks
-input.onButtonPressed(Button.A, function () {
-    if (mode == 0) {
-        mode = 1
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-    } else if (mode == 1) {
-        if (color == "1") {
-        	
-        } else if (false) {
-        	
-        } else if (false) {
-        	
-        }
-        mode = 0
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Black))
-    } else {
-    	
-    }
-})
-let strip: neopixel.Strip = null
-```
-
-## 4. Aボタンで決定してLEDを光らせる5
-**color="1"** と同様に、 **color="2"** と**color="3"** について、それぞれ、青色、白色でLEDをつけるようにプログラムします。
+``||input:ボタンAが押されたとき||``の上の``||neopixel:stripを赤色に点灯する||``の赤をblackにかえる 。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
@@ -480,256 +457,83 @@ input.onButtonPressed(Button.A, function () {
         mode = 1
         basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
-    } else if (mode == 1) {
-        if (color == "1") {
-            strip.showColor(neopixel.colors(NeoPixelColors.Red))
-        } else if (color == "2") {
-            strip.showColor(neopixel.colors(NeoPixelColors.Blue))
-        } else if (color == "3") {
-            strip.showColor(neopixel.colors(NeoPixelColors.White))
-        }
+    } else {
         mode = 0
         basic.showNumber(mode)
-    } else {
-    	
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
     }
 })
 let strip: neopixel.Strip = null
 ```
-## ライトウェーブ4 テスト @showdialog
-ここまででのプログラムです。
 
-```blocks
-input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-        basic.pause(200)
+
+## 4. LEDを光らせる5 テスト @showdialog
+ここまでinput.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
-        basic.pause(200)
+    } else {
+        mode = 0
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
     }
 })
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
-    strip.show()
-})
+let color = ""
+let mode = 0
 let strip: neopixel.Strip = null
 strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
-```
-## ライトウェーブ4 テスト 
-micro:bit にダウンロードして実際に動かしてみましょう。
-設定した色で光らせることができたら、次へ進みます。
-
-
-## ライトウェーブ5
-次は、設定した色を順番に変えていきます。
-``||input:ゆさぶられたとき||`` の一番下に　``||loops:ループ||`` の ``||loops:くりかえし（4）回||`` をいれる。
-```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
-    strip.show()
-    for (let index = 0; index < 4; index++) {
-       
+mode = 0
+keypad.setKeyPad4(
+DigitalPin.P0,
+DigitalPin.P1,
+DigitalPin.P2,
+DigitalPin.P8,
+DigitalPin.P13,
+DigitalPin.P14,
+DigitalPin.P15,
+DigitalPin.P16
+)
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
+        if (color == "1") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Red))
+            mode = 0
+            basic.showNumber(mode)
+        } else if (color == "2") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+            mode = 0
+            basic.showNumber(mode)
+        } else if (color == "3") {
+            strip.showColor(neopixel.colors(NeoPixelColors.White))
+            mode = 0
+            basic.showNumber(mode)
+        } else {
+        	
+        }
+    } else {
+    	
     }
 })
 ```
-
-## ライトウェーブ6
-追加した  ``||loops:くりかえし（4）回||`` の中に ``||neopixel:NeoPixel||``　の ``||neopixel:strip に設定されている色をLED（1）個分ずらす（ひとまわり）||`` と``||neopixel:strip を設定した色で点灯する||`` をいれる。
-
-```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
-    strip.show()
-    for (let index = 0; index < 4; index++) {
-        strip.rotate(1)
-        strip.show()
-    }
-})
-let strip: neopixel.Strip = null
-```
-## ライトウェーブ7
-追加した  ``||loops:くりかえし（4）回||`` の中の一番下に、``||basic:一時停止（ミリ秒） 100||`` をいれ、「100」 を「200」にかえる。
-
-```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
-    strip.show()
-    for (let index = 0; index < 4; index++) {
-        strip.rotate(1)
-        strip.show()
-        basic.pause(200)
-    }
-})
-let strip: neopixel.Strip = null
-```
-## ライトウェーブ4 テスト @showdialog
-ここまででのプログラムです。
-
-```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Violet))
-    strip.show()
-    for (let index = 0; index < 4; index++) {
-        strip.rotate(1)
-        strip.show()
-        basic.pause(500)
-    }
-})
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 4, NeoPixelMode.RGB)
-```
-
-## ライトウェーブ4 テスト 
+## 4. LEDを光らせる5 テスト
 ここまでできたら、micro:bit にダウンロードして実際に動かしてみましょう。
-光の色が動くことを確認できたら、色を変えたり、動くスピードを変えて自由に光らせてみよう。
+キーパッドは、平らなところにおいて、ゆっくり押さえるようにしてください。
 
-## 💡 点滅（交互に光る）@showdialog
-
-次の３つのプログラムは交互にLEDを光らせるプログラムです。
-プログラムを理解したら、どれか１つを実際に打ち込んでみてください。
-
-### 参考：ひとつおきに、を交互に光らせる。（ひとつずつ、色を決める。）
-
-![交互点滅のイメージ](https://www.kodai.uec.ac.jp/sk/make-code/np/img_blink_uecsc.png)
-
-```blocks
-input.onGesture(Gesture.ScreenDown, function () {
-    for (let index = 0; index < 10; index++) {
-        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(7, neopixel.colors(NeoPixelColors.Black))
-        strip.show()
-        basic.pause(200)
-        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Blue))
-        strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Black))
-        strip.setPixelColor(7, neopixel.colors(NeoPixelColors.Blue))
-        strip.show()
-        basic.pause(200)
-    }
-})
-let strip: neopixel.Strip = null
-```
-
-```blocks
-input.onGesture(Gesture.ScreenDown, function () {
-    for (let index = 0; index < 10; index++) {
-        for (let カウンター = 0; カウンター <= 7; カウンター++) {
-            if (カウンター % 2 == 0) {
-                strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Blue))
-            } else {
-                strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Black))
-            }
-        }
-        strip.show()
-        basic.pause(200)
-        for (let カウンター = 0; カウンター <= 7; カウンター++) {
-            if (カウンター % 2 == 1) {
-                strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Blue))
-            } else {
-                strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Black))
-            }
-        }
-        strip.show()
-        basic.pause(200)
-    }
-})
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
-```
-
-```blocks
-input.onGesture(Gesture.ScreenDown, function () {
-    for (let カウンター = 0; カウンター <= 7; カウンター++) {
-        if (カウンター % 2 == 0) {
-            strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Blue))
-        } else {
-            strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Black))
-        }
-    }
-    for (let index = 0; index < 20; index++) {
-        strip.show()
-        basic.pause(200)
-        strip.rotate(1)
-    }
-})
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
-```
-## 💡 点滅（交互に光る）
-
-点滅するプログラムを作成してみましょう。
-💡 をクリックすると、３番目のプログラムが確認できます。
-プログラムが完成したら、micro:bit にダウンロードして実際に動かしてみてください。
-
-```blocks
-input.onGesture(Gesture.ScreenDown, function () {
-    for (let カウンター = 0; カウンター <= 7; カウンター++) {
-        if (カウンター % 2 == 0) {
-            strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Blue))
-        } else {
-            strip.setPixelColor(カウンター, neopixel.colors(NeoPixelColors.Black))
-        }
-    }
-    for (let index = 0; index < 20; index++) {
-        strip.show()
-        basic.pause(200)
-        strip.rotate(1)
-    }
-})
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
 ```
 
 
-## 🌈 発展：色を自由に決める@showdialog
+## 🌈 ここまでのプログラムを振り返ろう@showdialog
 ここまで、ブロックに登録されている色を選んで色を決めてきましたが、色を「赤・緑・青（RGB）」の三原色の組み合わせで自由に指定できます。
 RGBはそれぞれ0から255までの数値で光の強さを表し、三つの光を同時に混ぜることで一つの色を作ります。
 たとえば、赤だけを最大値にすると(255,0,0)で純粋な赤、赤と緑を混ぜると(255,255,0)で黄色になります。
 青を弱めると紫、すべて同じ値にすると白やグレーになります。
 この仕組みにより、単に「赤」「青」と決まった色を選ぶだけでなく、自分の好きな色や明るさを細かく調整できます。プログラムの中で数値を変えれば、点滅するたびに色が変わるようなアニメーションも作れるため、表現の幅が大きく広がります。
 
-![色](https://www.kodai.uec.ac.jp/sk/make-code/np/img_color.png)
+![フローチャート](https://www.kodai.uec.ac.jp/sk/make-code/np/img_color.png)
 
 ### サンプルプログラム
 ```blocks
