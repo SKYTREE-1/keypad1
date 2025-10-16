@@ -38,9 +38,9 @@ keypad=github:lioujj/pxt-keypad
 
 👉 接続部分を上にして左から+5V, DIN, GND。（黄色の線は信号、赤/白はモジュールごとに違うので注意‼）。  
 
-![配線図１](github:SKYTREE-1/microbit-tutorials/images-keypad1/wiring-diagram_keypad.png)
+![配線図2](github:SKYTREE-1/keypad1/images/wiring-diagram_keypad.png)
   写真では、真ん中の線（DIN）をP0に接続するように書いてありますが、P12に接続してください。
-  
+
 
 ---
 
