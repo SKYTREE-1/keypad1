@@ -448,37 +448,57 @@ let strip: neopixel.Strip = null
 ```
 
 
-## ライトウェーブ２
-同じように``||neopixel:strip の（0）番目を[赤]色に設定する||`` を使って、１番目～７番目のLEDの色を設定してください。色は自由に決めてください。
+## 4. Aボタンで決定してLEDを光らせる4
+**mode=1**の下に新しく追加した``||logic:もし〜なら||``ブロックの一番うえの ``||logic:(　)=(　)||`` をあてはめ、
+右辺に ``||text:テキスト||``にある``||text:("　")||``をセットして、**""**の間に**1**を書き入れます。
+その後、左辺に ``||variables:変数||``から``||variables:color||``をセットします。
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else if (mode == 1) {
+        if (color == "1") {
+        	
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        }
+        mode = 0
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    } else {
+    	
+    }
 })
 let strip: neopixel.Strip = null
 ```
 
-## ライトウェーブ3
-４つのLEDの色を設定したら、``||neopixel:NeoPixel||``　の ``||neopixel:strip を設定した色で点灯する||`` を``||input:ゆさぶられたとき||`` の一番下に追加する。
+## 4. Aボタンで決定してLEDを光らせる5
+**color="1"** と同様に、 **color="2"** と**color="3"** について、それぞれ、青色、白色でLEDをつけるようにプログラムします。
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    strip.setPixelColor(1, neopixel.colors(NeoPixelColors.Orange))
-    strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Yellow))
-    strip.setPixelColor(3, neopixel.colors(NeoPixelColors.Green))
-    strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    strip.setPixelColor(5, neopixel.colors(NeoPixelColors.Indigo))
-    strip.setPixelColor(6, neopixel.colors(NeoPixelColors.Purple))
-    strip.setPixelColor(7, neopixel.colors(NeoPixelColors.White))
-    strip.show()
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    } else if (mode == 1) {
+        if (color == "1") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Red))
+        } else if (color == "2") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+        } else if (color == "3") {
+            strip.showColor(neopixel.colors(NeoPixelColors.White))
+        }
+        mode = 0
+        basic.showNumber(mode)
+    } else {
+    	
+    }
 })
 let strip: neopixel.Strip = null
 ```
