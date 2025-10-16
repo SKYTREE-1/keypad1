@@ -11,7 +11,7 @@ keypad=github:lioujj/pxt-keypad
 
 ---
 
-## 1. 接続しよう@showdialog
+## 1. 接続しよう1@showdialog
 
 まず、テープLED と keypad を micro:bit に接続しましょう。
 
@@ -26,7 +26,7 @@ keypad=github:lioujj/pxt-keypad
 ![配線図１](https://www.kodai.uec.ac.jp/sk/make-code/np/img_wiring_uecsc.png)
   写真では、真ん中の線（DIN）をP0に接続するように書いてありますが、P12に接続してください。
 
-## 1. 接続しよう@showdialog
+## 1. 接続しよう2 @showdialog
 
 まず、テープLED と keypad を micro:bit に接続しましょう。
 
@@ -44,7 +44,34 @@ keypad=github:lioujj/pxt-keypad
 👉 kiypad を上にして、左から番号を振っています。
 
 ![配線図2](https://github.com/SKYTREE-1/keypad1/blob/7da951ecda1ca0e339f5be36227d626886317810/images/wiring-diagram_keypad.png?raw=true)
-  写真では、真ん中の線（DIN）をP0に接続するように書いてありますが、P12に接続してください。
+ 
+
+## 1. 接続しよう2（キーパッドの初期化） @showdialog
+キーパッドを接続したら、``||keypad:KeyPad||``にある``||keypad:set 4*4 KeyPad〜||``を``||basic:最初だけ||`` にセットして、次のようにセットします。
+
+  - pin1（R1）→ P0
+  - pin2（R2）→ P1
+  - pin3（R3）→ P2
+  - pin4（R4）→ P8
+  - pin5（C1）→ P13
+  - pin6（C2）→ P14
+  - pin7（C3）→ P15
+  - pin8（C4）→ P16
+
+```blocks
+
+keypad.setKeyPad4(
+DigitalPin.P0,
+DigitalPin.P1,
+DigitalPin.P2,
+DigitalPin.P8,
+DigitalPin.P13,
+DigitalPin.P14,
+DigitalPin.P15,
+DigitalPin.P16
+)
+
+```
 
 ## テープLEDを光らせよう1　LEDの個数の設定
 1. テープLEDの点灯テスト
@@ -53,7 +80,7 @@ keypad=github:lioujj/pxt-keypad
 ``||neopixel: NeoPixel ||`` にある ``||variables:変数 strip を〜||``を``||basic:最初だけ||``にいれて``||neopixel: 端子P0に接続しているLED24個の〜 ||``の「24」を「8」にかえます。  
 
    ```blocks
-   let strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+   let strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
    ```
 
 ## テープLEDを光らせよう2　全部赤で光らせる
@@ -187,7 +214,7 @@ input.onButtonPressed(Button.A, function () {
 })
 let mode = 0
 let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
 mode = 0
 let color = ""
 basic.forever(function () {
@@ -210,10 +237,11 @@ A ボタンを押すことで、モードの表示が切り替わることが確
 
 ## 3.キー入力を受け取る（変数の作成）
 ``||variables:変数||`` の``||variables:変数を追加する...||``で、新しい変数 **color** を作成します。
-そして、最初だけに ``||variables:変数 mode を 0 にする||`` をセットして、``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``を
+そして、最初だけに ``||variables:変数 mode を 0 にする||`` をセットして、``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``をセットして、半角の1を書き入れます。
+（1は文字列として扱われます。）
 
 ```blocks
-let color = ""
+let color = "1"
 ```
 
 
@@ -231,7 +259,7 @@ input.onButtonPressed(Button.A, function () {
     }
 })
 let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 4, NeoPixelMode.RGB)
+strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
 ```
 
 ## 3.キー入力を受け取る（入力の受付1）
@@ -317,9 +345,9 @@ input.onButtonPressed(Button.A, function () {
 })
 let mode = 0
 let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
 mode = 0
-let color = ""
+let color = "1"
 basic.forever(function () {
     if (mode == 1) {
         color = keypad.getKeyString()
@@ -336,24 +364,85 @@ basic.forever(function () {
 キーパッドは、平らなところにおいて、ゆっくり押さえるようにしてください。
 
 
-## ライトウェーブ（説明）　 @showdialog
+## 4. Aボタンで決定してLEDを光らせる @showdialog
 
-### 🌀 光の流れを操れ！
+ここでは、入力受付モードで入力した値（変数 color）を使って、
+**Aボタンを押すことで「決定」**し、LEDを点灯するプログラムを作ります。
 
-この活動では、micro:bitとNeoPixel（8個）を使って、光が流れるように見える「ライトウェーブ」を作ります。
-✨スピードを変えたり、色を変えたり、リズムに合わせて光らせるても楽しいです。
+（ボタン操作についての確認）
+- これまでに、モードが「入力受付モード」のときにキー入力ができるようになりました。
+- 入力した数字（例：1, 2, 3）を color に保存しておきます。(color は 1 で初期化されています。)
+- 「入力受付モード」で、Aボタンが押されたら「決定」とみなし、color の値に応じてLEDの色を変えて点灯します。
 
-はじめに、LEDの番号について確認しましょう。以下のように、micro:bit に近い方から、0番目、1番目、...のように数えます。
+💡 ポイント：入力（キーパッド）を終えて、画面で色番号を確認して、Aボタンで点灯のコマンドを実行します。
 
 
-![LEDの数え方](https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel_uecsc.png)
-
-## ライトウェーブ１
-``||input:入力||`` から ``||input:ゆさぶられたとき||`` をだして、``||neopixel:NeoPixel||`` のその他にある ``||neopixel:strip の（0）番目を[赤]色に設定する||`` を、いれる。０番目は、一番 micro:bit に近いLEDのことです。（色は自由に変更していいです。）
+## 4. Aボタンで決定してLEDを光らせる１
+``||input:ボタンAが押されたとき||`` の``||logic:もし〜なら||``ブロックの左下にある ** + ** を押して、分岐を増やします。
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
-    strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else if (false) {
+    	
+    } else {
+        mode = 0
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    }
+})
+let strip: neopixel.Strip = null
+```
+
+## 4. Aボタンで決定してLEDを光らせる2
+``||logic:もし〜なら||`` 新しく増えた条件が ** mode = 1 ** となるようにして、
+``||logic:でなければ||``の内容を、この条件の下に移動します。
+
+```blocks
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else if (false) {
+        mode = 0
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))    	
+    } else {
+
+    }
+})
+let strip: neopixel.Strip = null
+```
+
+## 4. Aボタンで決定してLEDを光らせる3
+``||input:ボタンA〜||``の中の``||logic:もし〜なら||``ブロックの 新しく増えた条件 ** mode = 1 ** の一番上に、
+新しく``||logic:もし〜なら||``ブロックを追加して、３つ書けるように分岐を増やします。
+最後の``||logic:でなければ||``は、左側の **ー**をクリックして消してください。
+
+```blocks
+input.onButtonPressed(Button.A, function () {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    } else if (mode == 1) {
+        if (true) {
+        	
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        }
+        mode = 0
+        basic.showNumber(mode)
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    } else {
+    	
+    }
 })
 let strip: neopixel.Strip = null
 ```
@@ -417,7 +506,7 @@ input.onGesture(Gesture.Shake, function () {
     strip.show()
 })
 let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
 ```
 ## ライトウェーブ4 テスト 
 micro:bit にダウンロードして実際に動かしてみましょう。
