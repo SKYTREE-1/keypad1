@@ -195,25 +195,29 @@ basic.forever(function () {
 })
 
 ```
-## 状態（モード）の設置（テスト） 
+##  2.状態（モード）の設置（テスト） 
 micro:bit にダウンロードして実際に動かしてみましょう。
 A ボタンを押すことで、モードの表示が切り替わることが確認できたら、次へ進みましょう。
 
 ## 3.キー入力を受け取る @showdialog
 待機モード(0)と入力受付モード(1)の切り替えができたら、入力受付モードの時に、
-キーパッドからの数の入力を受け取って変数 **color** に代入するようプログラムをします。
-キーパッドから入力した数は、文字列型で渡されるので、必要に応じて、数値に変換して利用します。
+ードが「入力受付モード」になったら、``||basic:ずっと||`` の中でキー入力を受け付けるようにします。
+つまり、モードが「入力受付モード（``||variables:mode=1||``）」の時だけ、キー操作による入力処理が実行されるようにします。
+
+キーパッドから受け取った数は、変数 **color** に代入するようプログラムをします。
+ここで受け取った数は、文字列型で渡されるので、必要に応じて、数値に変換して利用します。
+
 
 ## 3.キー入力を受け取る（変数の作成）
 ``||variables:変数||`` の``||variables:変数を追加する...||``で、新しい変数 **color** を作成します。
 そして、最初だけに ``||variables:変数 mode を 0 にする||`` をセットして、``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``を
 
 ```blocks
-let c = ""
+let color = ""
 ```
 
 
-## もっとテープLEDを光らせよう 5　ポーズ
+## 3.キー入力を受け取る（変数の作成）
 ``||basic:一時停止（　）ミリ秒||``ブロックを使って、0.2秒ほど、そのまま待機するようにプログラムを変更します。
 ``||neopixel:strip を赤色に点灯する||`` と ``||neopixel:strip をblack色に点灯する||`` の後に、それぞれ、``||basic:基本||`` の``||basic:一時停止（ミリ秒） 100||`` をいれ、「100」 を「200」にかえます。必ず２箇所にいれてください。
 
@@ -230,25 +234,107 @@ let strip: neopixel.Strip = null
 strip = neopixel.create(DigitalPin.P0, 4, NeoPixelMode.RGB)
 ```
 
-## もっとテープLEDを光らせよう 6 テスト @showdialog
+## 3.キー入力を受け取る（入力の受付1）
+``||basic:ずっと||`` に、``||logic:論理||``にあるフォークの形の``||logic:もし〜なら||``ブロックをセットして、
+条件の部分を``||variables:mode||`` =  1　とします。
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+    	
+    } else {
+    	
+    }
+})
+```
+
+## 3.キー入力を受け取る（入力の受付2）
+``||logic:もし〜なら||``ブロックの ``||variables:mode||`` =  1　の下に、``||variables:colorを（　）にする||``をセットします。 
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+        color = 0
+    } else {
+    	
+    }
+})
+
+```
+
+## 3.キー入力を受け取る（入力の受付2）
+``||variables:colorを 0 にする||`` の 0 の部分に、``||keypad:KeyPad value(string)||``をいれます。
+代入のブロックの後に、``||basic:一時停止（ミリ秒）||``を入れます。時間は300ミリ秒にしてください。
+
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+    } else {
+    	
+    }
+})
+
+```
+
+## 3.キー入力を受け取る（入力の受付3）
+``||basic:一時停止（ミリ秒）||``の後に、``||basic:文字列を表示（　）||`` に ``||variables:color||`` をセットして代入した文字列を表示します。
+
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
+    } else {
+    	
+    }
+})
+
+```
+
+## 3.キー入力を受け取る（テスト） @showdialog
 ここまでのプログラムです。
+キー入力の後に一時停止を入れるのは、連続して同じ入力が何度も処理されてしまうのを防ぐためです。
+
+micro:bitなどではループがとても速く回るため、ボタンが押されたままの一瞬の間にも、同じ入力が何十回も検出されてしまいます。
+少し待ち時間を入れることで、**「1回の押下＝1回の入力」**として安定した動作にできます。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
+    if (mode == 0) {
+        mode = 1
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Red))
-        basic.pause(200)
+    } else {
+        mode = 0
+        basic.showNumber(mode)
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
-        basic.pause(200)
     }
 })
+let mode = 0
 let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 4, NeoPixelMode.RGB)
+strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+mode = 0
+let color = ""
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
+    } else {
+    	
+    }
+})
 ```
 
-## もっとテープLEDを光らせよう 6 テスト 
+## 3.キー入力を受け取る（テスト） 
 ここまでできたら、micro:bit にダウンロードして実際に動かしてみましょう。
-ついたり、きえたりすることを確認したら、早く点滅させたり、ゆっくり点滅させたり、点滅の回数を増やしたりしてみてください。
+キーパッドは、平らなところにおいて、ゆっくり押さえるようにしてください。
+
 
 ## ライトウェーブ（説明）　 @showdialog
 
