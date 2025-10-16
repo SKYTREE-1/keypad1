@@ -468,7 +468,10 @@ let strip: neopixel.Strip = null
 
 
 ## 4. LEDを光らせる5 テスト @showdialog
-ここまでinput.onButtonPressed(Button.A, function () {
+ここまでのプログラムです。
+
+```blocks
+input.onButtonPressed(Button.A, function () {
     if (mode == 0) {
         mode = 1
         basic.showNumber(mode)
@@ -523,86 +526,22 @@ basic.forever(function () {
 ここまでできたら、micro:bit にダウンロードして実際に動かしてみましょう。
 キーパッドは、平らなところにおいて、ゆっくり押さえるようにしてください。
 
-```
 
 
 ## 🌈 ここまでのプログラムを振り返ろう@showdialog
-ここまで、ブロックに登録されている色を選んで色を決めてきましたが、色を「赤・緑・青（RGB）」の三原色の組み合わせで自由に指定できます。
-RGBはそれぞれ0から255までの数値で光の強さを表し、三つの光を同時に混ぜることで一つの色を作ります。
-たとえば、赤だけを最大値にすると(255,0,0)で純粋な赤、赤と緑を混ぜると(255,255,0)で黄色になります。
-青を弱めると紫、すべて同じ値にすると白やグレーになります。
-この仕組みにより、単に「赤」「青」と決まった色を選ぶだけでなく、自分の好きな色や明るさを細かく調整できます。プログラムの中で数値を変えれば、点滅するたびに色が変わるようなアニメーションも作れるため、表現の幅が大きく広がります。
+ここまでで、Aボタンでモードを切り替えて、キーパットから番号を指定して、番号に対応した色でLEDを光らせるプログラムを作成しました。
 
-![フローチャート](https://www.kodai.uec.ac.jp/sk/make-code/np/img_color.png)
+少し長いプログラムなので、おおよその処理の流れを図で確認しましょう。
 
-### サンプルプログラム
-```blocks
-input.onButtonPressed(Button.B, function () {
-    n = 255/ 7
-    for (let カウンター = 0; カウンター <= 7; カウンター++) {
-        strip.setPixelColor(カウンター, neopixel.rgb(0 + n * カウンター, 255 - n * カウンター, 255))
-    }
-    strip.show()
-})
-let n = 0
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
+![フローチャート](https://github.com/SKYTREE-1/keypad1/blob/eb919c26050c53bdf62fcb16b4fb3f4e98aa891b/images/flow_1.png?raw=true)
+
 ```
-## 発展：色を自由にきめる
+## 5. もっと工夫しよう@showdialog
 
-サンプルプログラムを参考に、RGBを指定してLEDの色を決めて光らせるプログラムを作成してみてください。
-RGBのブロックは、``||neopixel:neopixel||``の ``||neopixel:...その他||``にあります。
-💡 をクリックすると、前のページのサンプルと、Aボタンを押した時にstrip全体に青が点灯するプログラムが見られます。
+さいごは、keypad と テープLEDを使って、じゆうにあそんでみよう！
 
-
-```blocks
-input.onButtonPressed(Button.A, function () {
-    strip.showColor(neopixel.rgb(0, 0, 255))
-})
-input.onButtonPressed(Button.B, function () {
-    n = 255 / 7
-    for (let カウンター = 0; カウンター <= 7; カウンター++) {
-        strip.setPixelColor(カウンター, neopixel.rgb(0 + n * カウンター, 255 - n * カウンター, 255))
-    }
-    strip.show()
-})
-let n = 0
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P0, 8, NeoPixelMode.RGB)
-```
-## 4. もっと工夫しよう（自由な活動・15分）@showdialog
-
-さいごは、じぶんのすきな色や光りかたをつかって、じゆうにあそんでみよう！
-
-たとえば…
-
-🔄「じゅんばんに色がかわるライト」 　→ 赤→青→みどり→黄色…と、色がながれるように光らせるよ！
-
-🎵「おんがくにあわせて光るライト」 　→ すきなうたにあわせて、ピカピカ光るようにしてみよう！
-
-💬「メッセージライト」 　→ うれしい気もちのときはピンク、がんばるぞ！のときは赤など、気もちを色であらわしてみよう！
-
-🌀「まほうのライト」 　→ ボタンをおすと、ひみつの色が出てくる！どんな色になるかはおたのしみ♪
-
-自由に色やうごきをえらんで、オリジナルのライトをつくると、まるで光のアーティストみたい✨ 作品を見せあったり、いっしょにアイデアを出しあって、いろいろな表現にチャレンジしてください！
 
 ![子どもたちが活動している](https://www.kodai.uec.ac.jp/sk/make-code/np/img_presentation.png)
 
----
-
-## 5. まとめ（5分）
-
-* 今日できたこと：
-
-  * NeoPixelを「つないだ」
-  * 色を「自由に変えた」
-  * 「順番や点滅」で動きを作った
-  * オリジナルパターンを作った
-* 次の発展例：
-
-  * LEDを増やして光らせる
-  * 音やセンサーと組み合わせる
-
-![まとめのイラスト](https://www.kodai.uec.ac.jp/sk/make-code/np/img_summary.png)
 
 <script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", ["neopixel=github:microsoft/pxt-neopixel",]);</script>
