@@ -244,24 +244,6 @@ A ボタンを押すことで、モードの表示が切り替わることが確
 let color = "1"
 ```
 
-
-## 3.キー入力を受け取る（変数の作成）
-``||basic:一時停止（　）ミリ秒||``ブロックを使って、0.2秒ほど、そのまま待機するようにプログラムを変更します。
-``||neopixel:strip を赤色に点灯する||`` と ``||neopixel:strip をblack色に点灯する||`` の後に、それぞれ、``||basic:基本||`` の``||basic:一時停止（ミリ秒） 100||`` をいれ、「100」 を「200」にかえます。必ず２箇所にいれてください。
-
-```blocks
-input.onButtonPressed(Button.A, function () {
-    for (let index = 0; index < 10; index++) {
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-        basic.pause(200)
-        strip.showColor(neopixel.colors(NeoPixelColors.Black))
-        basic.pause(200)
-    }
-})
-let strip: neopixel.Strip = null
-strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
-```
-
 ## 3.キー入力を受け取る（入力の受付1）
 ``||basic:ずっと||`` に、``||logic:論理||``にあるフォークの形の``||logic:もし〜なら||``ブロックをセットして、
 条件の部分を``||variables:mode||`` =  1　とします。
@@ -290,7 +272,7 @@ basic.forever(function () {
 
 ```
 
-## 3.キー入力を受け取る（入力の受付2）
+## 3.キー入力を受け取る（入力の受付3）
 ``||variables:colorを 0 にする||`` の 0 の部分に、``||keypad:KeyPad value(string)||``をいれます。
 代入のブロックの後に、``||basic:一時停止（ミリ秒）||``を入れます。時間は300ミリ秒にしてください。
 
@@ -307,7 +289,7 @@ basic.forever(function () {
 
 ```
 
-## 3.キー入力を受け取る（入力の受付3）
+## 3.キー入力を受け取る（入力の受付4）
 ``||basic:一時停止（ミリ秒）||``の後に、``||basic:文字列を表示（　）||`` に ``||variables:color||`` をセットして代入した文字列を表示します。
 
 
@@ -364,82 +346,94 @@ basic.forever(function () {
 キーパッドは、平らなところにおいて、ゆっくり押さえるようにしてください。
 
 
-## 4. Aボタンで決定してLEDを光らせる @showdialog
+## 4. LEDを光らせる @showdialog
 
-ここでは、入力受付モードで入力した値（変数 color）を使って、
-**Aボタンを押すことで「決定」**し、LEDを点灯するプログラムを作ります。
+ここでは、入力受付モードで入力した値（変数 color）が確定したら、LEDを点灯するプログラムを作ります。
 
 （ボタン操作についての確認）
 - これまでに、モードが「入力受付モード」のときにキー入力ができるようになりました。
-- 入力した数字（例：1, 2, 3）を color に保存しておきます。(color は 1 で初期化されています。)
-- 「入力受付モード」で、Aボタンが押されたら「決定」とみなし、color の値に応じてLEDの色を変えて点灯します。
+- 入力した数字（例：1, 2, 3）を color に保存します。
+- colorの表示をしたら、color の値に応じてLEDの色を変えて点灯します。
 
-💡 ポイント：入力（キーパッド）を終えて、画面で色番号を確認して、Aボタンで点灯のコマンドを実行します。
+💡 ポイント：入力（キーパッド）を終えて、画面で色番号を確認したら点灯のコマンドを実行します。
 
 
-## 4. Aボタンで決定してLEDを光らせる１
-``||input:ボタンAが押されたとき||`` の``||logic:もし〜なら||``ブロックの左下にある ** + ** を押して、分岐を増やします。
-
-```blocks
-input.onButtonPressed(Button.A, function () {
-    if (mode == 0) {
-        mode = 1
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-    } else if (false) {
-    	
-    } else {
-        mode = 0
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Black))
-    }
-})
-let strip: neopixel.Strip = null
-```
-
-## 4. Aボタンで決定してLEDを光らせる2
-``||logic:もし〜なら||`` 新しく増えた条件が ** mode = 1 ** となるようにして、
-``||logic:でなければ||``の内容を、この条件の下に移動します。
+## 4. LEDを光らせる１
+``||basic:ずっと||`` の``||logic:もし〜なら||``ブロックの**mode=1**の一番下に、
+新しく``||logic:もし〜なら||``ブロック（フォークみたいな形のもの）を追加してます。
+左下にある ** + ** を２回押して、条件を３種類かけるように増やします。
 
 ```blocks
-input.onButtonPressed(Button.A, function () {
-    if (mode == 0) {
-        mode = 1
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-    } else if (false) {
-        mode = 0
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Black))    	
-    } else {
-
-    }
-})
-let strip: neopixel.Strip = null
-```
-
-## 4. Aボタンで決定してLEDを光らせる3
-``||input:ボタンA〜||``の中の``||logic:もし〜なら||``ブロックの 新しく増えた条件 ** mode = 1 ** の一番上に、
-新しく``||logic:もし〜なら||``ブロックを追加して、３つ書けるように分岐を増やします。
-最後の``||logic:でなければ||``は、左側の **ー**をクリックして消してください。
-
-```blocks
-input.onButtonPressed(Button.A, function () {
-    if (mode == 0) {
-        mode = 1
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-    } else if (mode == 1) {
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
         if (true) {
         	
         } else if (false) {
         	
         } else if (false) {
         	
+        } else {
+        	
         }
-        mode = 0
-        basic.showNumber(mode)
-        strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    } else {
+    	
+    }
+})
+let strip: neopixel.Strip = null
+```
+
+## 4. Aボタンで決定してLEDを光らせる2
+新しく追加した``||logic:もし〜なら||`` ブロックの最初の条件が ** color = 1 ** となるようにして、
+``||neopixel:stripを赤色に点灯する||``をセットしてます。その後、``||variables:変数 mode を（）||``にするブロックを使って、``||variables:mode||`` を 0にします。
+
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
+        if (color == "1") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Red))
+            mode = 0
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        } else {
+        	
+        }
+    } else {
+    	
+    }
+})
+let strip: neopixel.Strip = null
+```
+
+## 4. Aボタンで決定してLEDを光らせる2
+新しく追加した``||logic:もし〜なら||`` ブロックの最初の条件が ** color = 2 ** ,** color = 3** の場合も同様にして、それぞれ、青、白でLEDを点灯して、``||variables:mode||``を0にします。
+
+```blocks
+basic.forever(function () {
+    if (mode == 1) {
+        color = keypad.getKeyString()
+        basic.pause(300)
+        basic.showString(color)
+        if (color == "1") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Red))
+            mode = 0
+        } else if (color == "2") {
+            strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+            mode = 0
+        } else if (color == "3") {
+            strip.showColor(neopixel.colors(NeoPixelColors.White))
+            mode = 0
+        } else {
+        	
+        }
     } else {
     	
     }
@@ -448,7 +442,7 @@ let strip: neopixel.Strip = null
 ```
 
 
-## 4. Aボタンで決定してLEDを光らせる4
+## 4. LEDを光らせる4
 **mode=1**の下に新しく追加した``||logic:もし〜なら||``ブロックの一番うえの ``||logic:(　)=(　)||`` をあてはめ、
 右辺に ``||text:テキスト||``にある``||text:("　")||``をセットして、**""**の間に**1**を書き入れます。
 その後、左辺に ``||variables:変数||``から``||variables:color||``をセットします。
