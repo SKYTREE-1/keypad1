@@ -1,4 +1,4 @@
-# micro:bit × NeoPixel（4球 I型）チュートリアル# micro:bit × NeoPixel（8球 I型）チュートリアル
+# keypad でLEDの色をコントロールしよう
 ```package
 neopixel=github:microsoft/pxt-neopixel
 keypad=github:lioujj/pxt-keypad
@@ -7,7 +7,7 @@ keypad=github:lioujj/pxt-keypad
 ## keypadを利用してライトバーの色を変えよう@showdialog
 この活動では、「カラフル・ライトバーをつくろう」で学習したLEDとkeypad を組み合わせて、指定した色に切り替えるプログラムを作ってみよう」
 
-<!--![メインイメージ](https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel.png)-->
+![メインイメージ](https://www.kodai.uec.ac.jp/sk/make-code/np/img_neopixel.png)
 
 ---
 
@@ -77,7 +77,7 @@ DigitalPin.P16
 1. テープLEDの点灯テスト
 
 はじめに、テープLEDを光らせるテストをします。
-``||neopixel: NeoPixel ||`` にある ``||variables:変数 strip を〜||``を``||basic:最初だけ||``にいれて``||neopixel: 端子P0に接続しているLED24個の〜 ||``の「24」を「8」にかえます。  
+``||neopixel: NeoPixel ||`` にある ``||variables:変数 strip を〜||``を``||basic:最初だけ||``にいれて``||neopixel: 端子P0に接続しているLED24個の〜 ||``の端子を P12に変更して、「24」を「8」にかえます。  
 
    ```blocks
    let strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
@@ -96,20 +96,20 @@ DigitalPin.P16
 
 
 ## テープLEDを光らせよう3　テスト@showdialog
-ここまでのプログラムができたら、micro:bit にダウンロードして動かしてみよう。
-
+ここまでのプログラムがです。
    ```blocks
+   let strip = neopixel.create(DigitalPin.P12, 8, NeoPixelMode.RGB)
    input.onButtonPressed(Button.A, function () {
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
     })
-    let strip: neopixel.Strip = null
+    
 
   ```
-
+## テープLEDを光らせよう3　テスト
+ここまでできたら、micro:bit にダウンロードして動かしてみよう。
 
 
 ## 2.状態（モード）の設定（導入） @showdialog
-2. 状態（モード）についての説明
 
 これから作るプログラムでは、プログラムでは 次の2つの状態（モード） を考えます。
 
@@ -159,8 +159,8 @@ let strip: neopixel.Strip = null
 ```
 ## 2. 状態（モード）の設置（modeの切り替え）
 ``||input:ボタンAが押されたとき||`` のなかの条件分岐の **mode = 0**  後に ``||variables:変数||``から、``||variables:変数 mode を 0 にする||`` をセットして、0を１に変えます。
-その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` を入れ、0の部分に`||variables:mode||`` をあてはめます。
-また、``||neopixel:strip を赤色に点灯する||````を、``||basic:数を表示（　）||``の下に移動します。
+その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` を入れ、0の部分に``||variables:mode||`` をあてはめます。
+また、``||neopixel:strip を赤色に点灯する||``を、``||basic:数を表示（　）||``の下に移動します。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
@@ -177,8 +177,8 @@ let strip: neopixel.Strip = null
 
 ## 2. 状態（モード）の設置（modeの切り替え）
 ``||input:ボタンAが押されたとき||``のなかの条件分岐の **でなければ**の後に、``||variables:変数 mode を 0 にする||``をセットします。
-その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` 追加して、0の部分に`||variables:mode||`` をあてはめます。
-また、``||neopixel:strip をblackに点灯する||````を、``||basic:数を表示（　）||``の下に追加します。
+その後に、``||basic:基本||`` にある``||basic:数を表示（　）||`` 追加して、0の部分に``||variables:mode||`` をあてはめます。
+また、``||neopixel:strip をblackに点灯する||``を、``||basic:数を表示（　）||``の下に追加します。
 
 ```blocks
 input.onButtonPressed(Button.A, function () {
@@ -237,7 +237,7 @@ A ボタンを押すことで、モードの表示が切り替わることが確
 
 ## 3.キー入力を受け取る（変数の作成）
 ``||variables:変数||`` の``||variables:変数を追加する...||``で、新しい変数 **color** を作成します。
-そして、最初だけに ``||variables:変数 mode を 0 にする||`` をセットして、``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``をセットして、半角の1を書き入れます。
+そして、最初だけに ``||variables:変数 〜 を 0 にする||`` をセットして、変数名を **color** にかえ ``||advanced:高度なブロック||``の``||text:文字列||``の一番上にある``||text:" "||``をセットして、半角の1を書き入れます。
 （1は文字列として扱われます。）
 
 ```blocks
