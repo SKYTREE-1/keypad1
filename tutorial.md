@@ -382,7 +382,7 @@ basic.forever(function () {
     	
     }
 })
-let strip: neopixel.Strip = null
+
 ```
 
 ## 4. LEDを光らせる2
