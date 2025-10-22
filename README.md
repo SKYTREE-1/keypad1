@@ -24,7 +24,7 @@ MakeCode でこのリポジトリを編集します。
 
 ...
 
-* [チュートリアル](/keypad1/tutorial) [開始](https://makecode.microbit.org/#tutorial:github:SKYTREE-1/keypad1/tutorial)
+* [チュートリアル](/keypad1/tutorial) [開始](https://makecode.microbit.org/#tutorial:github:SKYTREE-1/keypad1/tutorial.md)
 
 ...
 
