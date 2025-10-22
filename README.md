@@ -22,6 +22,11 @@ MakeCode でこのリポジトリを編集します。
 
 * for PXT/microbit
 
+...
+
+* [チュートリアル](/keypad1/tutorial) [開始](https://makecode.microbit.org/#tutorial:github:SKYTREE-1/keypad1/tutorial)
+
+...
 
 
 <script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script>
