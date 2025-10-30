@@ -546,16 +546,14 @@ basic.forever(function () {
 ![子どもたちが活動している](https://www.kodai.uec.ac.jp/sk/make-code/np/img_presentation.png)
 
 
+
 <script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script>
-<script>makeCodeRender("{{ site.makecode.home_url }}", ["neopixel=github:microsoft/pxt-neopixel","keypad=github:lioujj/pxt-keypad",]);</script>
+<script>makeCodeRender("{{ site.makecode.home_url }}", [
+    "custom=github:jp-rad/pxt-ubit-extension",
+    "neopixel=github:microsoft/pxt-neopixel",
+]);
+</script>
 
-...
-
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.SKYTREE-1 }}/{{ site.github.keypad1}}");</script>
-
-
-
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
 
 
 
